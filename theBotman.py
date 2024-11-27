@@ -36,7 +36,7 @@ try:
 # If data unavailable, use placeholder data and print failure message
 except Exception:
     ec2_ID = "N/A"
-    ec2_Type = "Python ec2_"
+    ec2_Type = "Python"
     ec2_Region = "N/A"
     ec2_IP = "N/A"
     ec2_Zone = "N/A"
