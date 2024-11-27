@@ -19,15 +19,17 @@ client = discord.Client(intents=intents)
 
 # Set EC2 metadata variables as none so code can run.
 ec2_ID = None
-ec2_Type = None
 ec2_Region = None
 ec2_IP = None
+ec2_Zone = None
+ec2_Type = None
 
 # Get EC2 metadata and print success message
 try:
     ec2_ID = ec2_metadata.ec2__id
     ec2_Region = ec2_metadata.region
     ec2_IP = ec2_metadata.public_ipv4
+    ec2_Zone = ec2_metadata.availability_zone
     ec2_Type = ec2_metadata.ec2__type
     print("EC2 Metadata Available")
 
@@ -37,6 +39,7 @@ except Exception:
     ec2_Type = "Python ec2_"
     ec2_Region = "N/A"
     ec2_IP = "N/A"
+    ec2_Zone = "N/A"
     print("EC2 Metadata Unavailable.")
 
 @client.event
@@ -92,6 +95,7 @@ async def on_message(message):
             f"Type: {ec2_Type}\n"
             f"Region: {ec2_Region}\n"
             f"IP: {ec2_IP}\n"
+            f"Zone: {ec2_Zone}"
         )
         return
 # Run the bot
