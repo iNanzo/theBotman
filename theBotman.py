@@ -88,7 +88,7 @@ async def on_message(message):
         return
     
     # Run EC2 diagnostics
-    if user_message in ["ec2", "system diagnostics", "run system diagnostics"]:
+    if user_message in ["tell me about my server", "tell me about my server!", "ec2", "system diagnostics", "run system diagnostics"]:
         await message.channel.send(
             f"Running system diagnostics... 🤖\n"
             f"ID: {ec2_ID}\n"
