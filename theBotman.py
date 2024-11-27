@@ -7,7 +7,7 @@ from ec2_metadata import ec2_metadata
 
 load_dotenv()
 
-# Get the token from the environment variable
+# Get the token from .env file's variable
 token = os.getenv("TOKEN")
 
 # Set up intents for the bot
@@ -17,30 +17,29 @@ intents.message_content = True  # Allows reading message content
 # Initialize the bot with intents
 client = discord.Client(intents=intents)
 
-# Declare EC2 metadata variables as none, otherwise the program will not run.
-# If you set these variables = ec2_metadata.* they will try to pull data that doesn't exist when you run this program outside of EC2.
-instanceID = None
-instanceRegion = None
-instanceIP = None
-instanceZone = None
-instanceType = None
+# Set EC2 metadata variables as none so code can run.
+ec2_ID = None
+ec2_Region = None
+ec2_IP = None
+ec2_Zone = None
+ec2_Type = None
 
 # Get EC2 metadata and print success message
 try:
-    instanceID = ec2_metadata.instance_id
-    instanceRegion = ec2_metadata.region
-    instanceIP = ec2_metadata.public_ipv4
-    instanceZone = ec2_metadata.availability_zone
-    instanceType = ec2_metadata.instance_type
+    ec2_ID = ec2_metadata.ec2__id
+    ec2_Region = ec2_metadata.region
+    ec2_IP = ec2_metadata.public_ipv4
+    ec2_Zone = ec2_metadata.availability_zone
+    ec2_Type = ec2_metadata.ec2__type
     print("EC2 Metadata Available")
 
 # If data unavailable, use placeholder data and print failure message
 except Exception:
-    instanceID = "N/A"
-    instanceType = "Python Instance"
-    instanceRegion = "N/A"
-    instanceIP = "N/A"
-    instanceZone = "N/A"
+    ec2_ID = "N/A"
+    ec2_Type = "Python ec2_"
+    ec2_Region = "N/A"
+    ec2_IP = "N/A"
+    ec2_Zone = "N/A"
     print("EC2 Metadata Unavailable.")
 
 @client.event
@@ -92,11 +91,11 @@ async def on_message(message):
     if user_message in ["ec2", "system diagnostics", "run system diagnostics"]:
         await message.channel.send(
             f"Running system diagnostics... 🤖\n"
-            f"ID: {instanceID}\n"
-            f"Type: {instanceType}\n"
-            f"Region: {instanceRegion}\n"
-            f"IP: {instanceIP}\n"
-            f"Zone: {instanceZone}"
+            f"ID: {ec2_ID}\n"
+            f"Type: {ec2_Type}\n"
+            f"Region: {ec2_Region}\n"
+            f"IP: {ec2_IP}\n"
+            f"Zone: {ec2_Zone}"
         )
         return
 # Run the bot
