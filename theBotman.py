@@ -12,7 +12,8 @@ token = os.getenv("TOKEN")
 
 #Set up intents for the bot
 intents = discord.Intents.default()
-intents.message_content = True  #Allows reading message content
+intents.messages = True
+#intents.message_content = True  #Allows reading message content (This works when enabled on vscode but not AWS idk why)
 
 #Initialize the bot with intents
 client = discord.Client(intents=intents)
@@ -26,11 +27,11 @@ ec2_Type = None
 
 #Get EC2 metadata and print success message
 try:
-    ec2_ID = ec2_metadata.ec2__id
+    ec2_ID = ec2_metadata.instance_id
     ec2_Region = ec2_metadata.region
     ec2_IP = ec2_metadata.public_ipv4
     ec2_Zone = ec2_metadata.availability_zone
-    ec2_Type = ec2_metadata.ec2__type
+    ec2_Type = ec2_metadata.instance_type
     print("EC2 Metadata Available")
 
 #If data unavailable, use placeholder data and print failure message
