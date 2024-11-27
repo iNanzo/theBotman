@@ -1,4 +1,4 @@
-# Load the token from the environment variables
+#Load the token from the environment variables
 from dotenv import load_dotenv
 import os
 import discord
@@ -7,24 +7,24 @@ from ec2_metadata import ec2_metadata
 
 load_dotenv()
 
-# Get the token from .env file's variable
+#Get the token from .env file's variable
 token = os.getenv("TOKEN")
 
-# Set up intents for the bot
+#Set up intents for the bot
 intents = discord.Intents.default()
-intents.message_content = True  # Allows reading message content
+intents.message_content = True  #Allows reading message content
 
-# Initialize the bot with intents
+#Initialize the bot with intents
 client = discord.Client(intents=intents)
 
-# Set EC2 metadata variables as none so code can run.
+#Set EC2 metadata variables as none so code can run.
 ec2_ID = None
 ec2_Region = None
 ec2_IP = None
 ec2_Zone = None
 ec2_Type = None
 
-# Get EC2 metadata and print success message
+#Get EC2 metadata and print success message
 try:
     ec2_ID = ec2_metadata.ec2__id
     ec2_Region = ec2_metadata.region
@@ -33,7 +33,7 @@ try:
     ec2_Type = ec2_metadata.ec2__type
     print("EC2 Metadata Available")
 
-# If data unavailable, use placeholder data and print failure message
+#If data unavailable, use placeholder data and print failure message
 except Exception:
     ec2_ID = "N/A"
     ec2_Type = "Python"
@@ -48,7 +48,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # Get the channel, user, and message content
+    #Get the channel, user, and message content
     username = str(message.author).split("#")[0]
     displayname = str(message.author.display_name).split("#")[0]
     channel = str(message.channel.name)
@@ -59,7 +59,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    # Utility belt items and their responses
+    #Utility belt items and their responses
     utilityBelt = {
         "botorang": "Sending out Botorang... *WOOSH* 🌀",
         "botmobile": "Starting Botmobile engines... *VROOM VROOM* 🚗💨",
@@ -67,14 +67,14 @@ async def on_message(message):
         "bothook": "Deploying Bothook!... *SWOOSH, CLANK!* :knot::hook:"
     }
 
-    # Hello/Bye Respond based on message content
+    #Hello/Bye Respond based on message content
     if user_message in ["hello", "hi"]:
         await message.channel.send(f"Hello... {username}, codename '{displayname}'... Say 'Access utility belt' to view my actions 🤖")
         return
     elif user_message in ["bye", "goodbye", "good bye"]:
         await message.channel.send(f"I hope you enjoyed your stay at the {servername}, {displayname}... 🤖")
         return
-    # Special utility belt commands
+    #Special utility belt commands
     elif user_message in ["help", "help me", "botsignal"]:
         await message.channel.send(f"Distress call detected, sending help to {displayname}... 🤖")
         await message.channel.send(random.choice(list(utilityBelt.values())))
@@ -82,12 +82,12 @@ async def on_message(message):
     elif user_message == "access utility belt":
         await message.channel.send("Here are the items in my utility belt: " + ", ".join(utilityBelt.keys()))
         return
-    # Check if the message matches any utility belt item
+    #Check if the message matches any utility belt item
     elif user_message in utilityBelt:
         await message.channel.send(utilityBelt[user_message])
         return
     
-    # Run EC2 diagnostics
+    #Run EC2 diagnostics
     if user_message in ["tell me about my server", "tell me about my server!", "ec2", "system diagnostics", "run system diagnostics"]:
         await message.channel.send(
             f"Running system diagnostics... 🤖\n"
@@ -98,5 +98,5 @@ async def on_message(message):
             f"Zone: {ec2_Zone}"
         )
         return
-# Run the bot
+#Run the bot
 client.run(token)
